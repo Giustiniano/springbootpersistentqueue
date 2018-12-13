@@ -1,4 +1,4 @@
-package com.springboot.exercise.json;
+package com.springboot.exercise.model.json;
 
 public class ListRequest {
 

@@ -1,6 +1,6 @@
 package com.springboot.exercise.converters;
 
-import com.springboot.exercise.json.EnqueueRequest;
+import com.springboot.exercise.model.json.EnqueueRequest;
 
 public class EnqueueJobConverterTest {
 

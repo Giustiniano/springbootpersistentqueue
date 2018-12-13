@@ -6,7 +6,7 @@ import com.springboot.exercise.model.db.JobStatus;
 import com.springboot.exercise.repository.JobPropertiesRepository;
 import com.springboot.exercise.repository.JobRepository;
 import com.springboot.exercise.model.db.Job;
-import com.springboot.exercise.json.EnqueueRequest;
+import com.springboot.exercise.model.json.EnqueueRequest;
 import com.springboot.exercise.repository.JobStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.springboot.exercise.converters.EnqueueJobConverter.getJobProperties;
-
 // the endpoint accepting enqueue requests
 
-@Controller    // This means that this class is a Controller
+@Controller
 @RequestMapping(path="/queuemanager")
 public class EnqueueRequestController {
     @Autowired
@@ -33,7 +31,7 @@ public class EnqueueRequestController {
     private JobStatusRepository jobStatusRepository;
     @Autowired
     private JobPropertiesRepository jobPropertiesRepository;
-    @PutMapping(path="/enqueue")
+    @PostMapping(path="/enqueue")
     public @ResponseBody ResponseEntity<Integer> enqueuejob(@RequestBody EnqueueRequest request){
         request.validate();
         Job jobToBePersisted = EnqueueJobConverter.toEntity(request);

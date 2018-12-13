@@ -2,7 +2,7 @@ package com.springboot.exercise.converters;
 
 import com.springboot.exercise.model.db.Job;
 import com.springboot.exercise.model.db.JobProperties;
-import com.springboot.exercise.json.EnqueueRequest;
+import com.springboot.exercise.model.json.EnqueueRequest;
 
 import java.util.ArrayList;
 import java.util.List;
