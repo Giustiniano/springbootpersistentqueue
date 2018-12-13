@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hello;
+package main;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import com.springboot.exercise.repository.JobRepository;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,11 +42,11 @@ public class ApplicationTests {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private JobRepository jobRepository;
 
 	@Before
 	public void deleteAllBeforeTests() throws Exception {
-		personRepository.deleteAll();
+		jobRepository.deleteAll();
 	}
 
 	@Test

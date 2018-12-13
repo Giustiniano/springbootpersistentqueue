@@ -1,0 +1,5 @@
+{
+  "name": "jobname",
+  "payload": [{"property1":"value1"}, {"property2":"value2"}, {"property3": "value3"}],
+  "priority": 1
+}
