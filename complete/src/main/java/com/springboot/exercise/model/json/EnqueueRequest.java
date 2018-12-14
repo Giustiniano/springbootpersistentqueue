@@ -37,6 +37,7 @@ public class EnqueueRequest {
     public void validate(){
         ValidationUtils.throwIllegalArgExIfNullEmptyOrBlank(name, "job name");
         ValidationUtils.throwIllegalArgExIfNull(priority, "job priority");
+        ValidationUtils.throwIllegalArgExIfNullOrEmpty(payload, "job payload");
 
     }
 

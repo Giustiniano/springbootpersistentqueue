@@ -1,9 +1,6 @@
 package com.springboot.exercise.queuemanager.controller;
 
 import com.springboot.exercise.model.db.Job;
-import com.springboot.exercise.model.db.JobStatus;
-import com.springboot.exercise.model.db.JobStatusId;
-import com.springboot.exercise.model.json.CancelRequest;
 import com.springboot.exercise.model.json.ChangePriorityRequest;
 import com.springboot.exercise.repository.JobPropertiesRepository;
 import com.springboot.exercise.repository.JobRepository;
@@ -13,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
 
@@ -39,6 +39,9 @@ public class ChangePriorityRequestController {
         Optional<Job> persistedJob = jobsRepository.findById(request.getId());
         if(!persistedJob.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job with id " + request.getId().toString() + " not found");
+        }
+        if(persistedJob.get().getPriority() == request.getNewPriority()){
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Job with id " + request.getId().toString() + " already has priority set to " + request.getNewPriority());
         }
         persistedJob.get().setPriority(request.getNewPriority());
         jobsRepository.save(persistedJob.get());
