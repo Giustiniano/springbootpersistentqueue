@@ -1,21 +1,20 @@
-package com.springboot.exercise.converters;
+package com.springboot.exercise.queuemanager.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.exercise.model.db.Job;
 import com.springboot.exercise.model.db.JobStatusId;
 import com.springboot.exercise.model.json.CancelRequest;
-import com.springboot.exercise.queuemanager.controller.CancelRequestController;
 import com.springboot.exercise.repository.JobRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,7 +33,7 @@ public class CancelJobControllerTest {
     private CancelRequest cancelRequest = new CancelRequest();
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
+    @MockBean
     private JobRepository jobRepository;
     
     private static final String ENDPOINT = "/queuemanager/cancel";
@@ -45,10 +44,13 @@ public class CancelJobControllerTest {
     }
 
     @Test
-    @Ignore
     public void shouldCancelJob() throws Exception {
-
-        jobRepository.save(createJob());
+        Job jobToCancel = new Job();
+        jobToCancel.setIdJobStatus(JobStatusId.QUEUED.toJobStatus());
+        jobToCancel.setIdJob(1);
+        jobToCancel.setPriority(1);
+        jobToCancel.setName("not a real job");
+        Mockito.when(jobRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(jobToCancel));
         String jsonReq = new ObjectMapper().writeValueAsString(cancelRequest);
         mockMvc.perform(delete(ENDPOINT).contentType(MediaType.APPLICATION_JSON).content(jsonReq)).andExpect(
                 status().isOk());

@@ -38,6 +38,16 @@ public class ValidationUtils {
         }
     }
 
+    public static boolean isNegative(Integer i){
+        return i < 0;
+    }
+
+    public static void throwIllegalArgExIfNegative(Integer i, String fieldName){
+        if(isNegative(i)){
+            throw new IllegalArgumentException(fieldName + " cannot be null");
+        }
+    }
+
     public static void throwIllegalArgExIfNullOrEmpty(Collection c, String fieldName){
         if(isNullOrEmpty(c)){
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");

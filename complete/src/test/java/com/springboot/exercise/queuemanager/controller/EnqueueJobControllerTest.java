@@ -1,4 +1,4 @@
-package com.springboot.exercise.converters;
+package com.springboot.exercise.queuemanager.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.exercise.model.db.Job;
