@@ -25,4 +25,12 @@ public class JobStatus {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object anObject){
+        if(!(anObject instanceof JobStatus)){
+            return false;
+        }
+        return this.getIdJobStatus() == ((JobStatus) anObject).idJobStatus;
+    }
 }

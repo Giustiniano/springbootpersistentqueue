@@ -28,7 +28,7 @@ public class ChangePriorityRequestController {
     private JobStatusRepository jobStatusRepository;
     @Autowired
     private JobPropertiesRepository jobPropertiesRepository;
-    @PutMapping(path="/changePriority")
+    @PutMapping(path="/changepriority")
     @Transactional
     public @ResponseBody ResponseEntity<String> cancelJob(@RequestBody ChangePriorityRequest request){
         try {

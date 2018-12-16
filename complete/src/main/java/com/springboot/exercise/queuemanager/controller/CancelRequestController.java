@@ -1,7 +1,6 @@
 package com.springboot.exercise.queuemanager.controller;
 
 import com.springboot.exercise.model.db.Job;
-import com.springboot.exercise.model.db.JobStatus;
 import com.springboot.exercise.model.db.JobStatusId;
 import com.springboot.exercise.model.json.CancelRequest;
 import com.springboot.exercise.repository.JobPropertiesRepository;
@@ -30,6 +29,8 @@ public class CancelRequestController {
     private JobStatusRepository jobStatusRepository;
     @Autowired
     private JobPropertiesRepository jobPropertiesRepository;
+    private String messagePattern = "Job with id %d %s";
+
     @DeleteMapping(path="/cancel")
     @Transactional
     public @ResponseBody ResponseEntity<String> cancelJob(@RequestBody CancelRequest request){
@@ -38,17 +39,25 @@ public class CancelRequestController {
         } catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing job id");
         }
-        Optional<Job> persistedJob = jobsRepository.findById(request.getId());
-        if(!persistedJob.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job with id " + request.getId().toString() + " not found");
+        Optional<Job> optionalPersistedJob = jobsRepository.findById(request.getId());
+        if(!optionalPersistedJob.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(messagePattern, request.getId(), "not found"));
+        } else {
+            Job persistedJob = optionalPersistedJob.get();
+            if (persistedJob.getIdJobStatus().equals(JobStatusId.CANCELED.toJobStatus())) {
+                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(String.format(messagePattern, request.getId(), "has already been canceled"));
+            } else if(persistedJob.getIdJobStatus().equals(JobStatusId.DONE.toJobStatus())){
+                return ResponseEntity.status(HttpStatus.GONE).body(String.format(messagePattern, request.getId(), "has already been executed"));
+            } else if(persistedJob.getIdJobStatus().equals(JobStatusId.PROCESSING.toJobStatus())){
+                return ResponseEntity.status(HttpStatus.GONE).body(String.format(messagePattern, request.getId(), "has already started and cannot be canceled"));
+            } else{
+                persistedJob.setIdJobStatus(JobStatusId.CANCELED.toJobStatus());
+                jobsRepository.save(persistedJob);
+                return ResponseEntity.ok(String.format(messagePattern, request.getId(), "successfully canceled"));
+            }
         }
-        JobStatus canceledJobStatus = JobStatusId.CANCELED.toJobStatus();
-        if(persistedJob.get().getIdJobStatus().equals(canceledJobStatus)){
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Job with id " + request.getId().toString() + " has already been canceled");
-        }
-        persistedJob.get().setIdJobStatus(canceledJobStatus);
-        jobsRepository.save(persistedJob.get());
-        return ResponseEntity.ok("job " + request.getId().toString() + " successfully canceled");
     }
-
+    public void setJobRepository(JobRepository jobRepository){
+        this.jobsRepository = jobRepository;
+    }
 }

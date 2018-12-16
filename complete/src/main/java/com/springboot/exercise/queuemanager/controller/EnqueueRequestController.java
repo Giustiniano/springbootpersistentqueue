@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +48,15 @@ public class EnqueueRequestController {
         JobStatus scheduledJobStatus = JobStatusId.QUEUED.toJobStatus();
         jobToBePersisted.setIdJobStatus(scheduledJobStatus);
         persistJob(jobToBePersisted, request.getPayload());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @Transactional
     private void persistJob(Job job, List<Map.Entry<String, String>> payload){
-        Job persistedJob = jobsRepository.save(job);
-        List<JobProperties> jobProperties = EnqueueJobConverter.getJobProperties(persistedJob.getIdJob(), payload);
-        jobPropertiesRepository.saveAll(jobProperties);
+        List<JobProperties> jobProperties = new ArrayList<>(payload.size());
+        for(Map.Entry<String, String> payloadEntry : payload){
+            jobProperties.add(JobProperties.fromPayloadEntry(payloadEntry, job));
+        }
+        job.setPayload(jobProperties);
+        jobsRepository.save(job);
     }
 }

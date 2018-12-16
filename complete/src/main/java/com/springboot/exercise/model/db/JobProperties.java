@@ -1,6 +1,7 @@
 package com.springboot.exercise.model.db;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 public class JobProperties {
@@ -10,8 +11,9 @@ public class JobProperties {
     private int idJobProperties;
     private String propertyKey;
     private String propertyValue;
-    @Column(name = "fk_Job_idJob")
-    private int idJob;
+    @ManyToOne
+    @JoinColumn(name = "fk_Job_idJob")
+    private Job idJob;
 
     public int getIdJobProperties() {
         return idJobProperties;
@@ -37,11 +39,19 @@ public class JobProperties {
         this.propertyValue = propertyValue;
     }
 
-    public int getIdJob() {
+    public Job getIdJob() {
         return idJob;
     }
 
-    public void setIdJob(int idJob) {
+    public void setIdJob(Job idJob) {
         this.idJob = idJob;
+    }
+
+    public static JobProperties fromPayloadEntry(Map.Entry<String, String> entry, Job job){
+        JobProperties jobProperty = new JobProperties();
+        jobProperty.setPropertyKey(entry.getKey());
+        jobProperty.setPropertyValue(entry.getValue());
+        jobProperty.setIdJob(job);
+        return jobProperty;
     }
 }

@@ -4,7 +4,6 @@ import com.springboot.exercise.utils.ValidationUtils;
 
 import java.util.List;
 import java.util.Map;
-
 public class EnqueueRequest {
     private String name = null;
     private List<Map.Entry<String, String>> payload;
@@ -26,11 +25,11 @@ public class EnqueueRequest {
         this.payload = payload;
     }
 
-    public int getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 

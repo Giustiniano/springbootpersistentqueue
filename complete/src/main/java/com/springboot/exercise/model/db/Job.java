@@ -1,7 +1,5 @@
 package com.springboot.exercise.model.db;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +13,8 @@ public class Job {
 	private int idJob;
 	private String name;
 	private int priority;
-	@OneToMany()
-	@Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-	@JoinColumn(name="idJobProperties")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_Job_idJob", referencedColumnName = "idJob")
 	private List<JobProperties> payload;
 	private Date date;
 	@ManyToOne

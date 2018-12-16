@@ -18,13 +18,13 @@ public class EnqueueJobConverter {
         return job;
     }
 
-    public static List<JobProperties> getJobProperties(int persistedJobId, List<Map.Entry<String, String>> payload){
+    public static List<JobProperties> getJobProperties(Job persistedJob, List<Map.Entry<String, String>> payload){
         List<JobProperties> jobProperties = new ArrayList<>();
         for(Map.Entry<String, String> property : payload){
             JobProperties jobProperty = new JobProperties();
             jobProperty.setPropertyKey(property.getKey());
             jobProperty.setPropertyValue(property.getValue());
-            jobProperty.setIdJob(persistedJobId);
+            jobProperty.setIdJob(persistedJob);
             jobProperties.add(jobProperty);
         }
         return jobProperties;
