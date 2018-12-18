@@ -1,0 +1,18 @@
+Enqueue new job: 
+curl -v  -H "Content-Type: application/json" -X POST -d '{\"name\": \"jobname\",\"payload\": [{\"property1\":\"value1\"}, {\"property2\":\"value2\"}, {\"property3\": \"value3\"}],\"priority\": 1}' http://localhost:8080/queuemanager/enqueue
+
+change priority of existing job
+curl -v  -H "Content-Type: application/json" -X PUT -d '{\"id\": 1,\"newPriority\": 2}' http://localhost:8080/queuemanager/changepriority
+
+cancel existing job
+curl -v  -H "Content-Type: application/json" -X DELETE -d '{\"id\": 1}' http://localhost:8080/queuemanager/changepriority
+
+show job queue
+curl -v -H "Content-Type: application/json" -X GET http://localhost:8080/queuemanager/listqueue?priority=1
+curl -v -H "Content-Type: application/json" -X GET http://localhost:8080/queuemanager/listqueue
+
+Set scheduler timeout
+./curl -v  -H "Content-Type: application/json" -X PUT -d '{\"intervalInSeconds\": 10}' http://localhost:8080/scheduler/setinterval
+
+Get scheduler interval
+curl -v  -H "Content-Type: application/json" -X GET http://localhost:8080/scheduler/getinterval

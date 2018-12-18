@@ -1,0 +1,5 @@
+1) Install and start a MySQL instance if not already present
+2) Install Java 9 and make it the default jvm
+3) Execute the SQL script under db/ PLEASE NOTE: if you already have a db called "jobs" modify the script otherwise it will try to create/populate tables
+4) Modify config_for_runnable_jar/application.properties with the db connection parameters and put it in the same folder where you have built the runnable jar
+5) Start the REST server by running java -jar binary/springboot-rest-queue-0.1.0 . PLEASE NOTE: the server will fail to start if you already have a server listening on the 8080 port

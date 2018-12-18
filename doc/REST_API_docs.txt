@@ -1,0 +1,52 @@
+Short description for the REST API endpoint
+
+1) Queue manager api
+
+	Resource prefix /queuemanager
+	
+	this api exposes the following endpoints
+	/enqueue (POST) add a new job to the queue. Expects a JSON request containing the job name, its priority and a set of key, value pairs as the job payload. 
+	See rest_calls.txt for an example json envelope. 
+	Returns: 
+	    CREATED and a JSON message with the new Job id 
+		or
+		BAD REQUEST if the json request is missing one or more job attributes
+	
+	/changepriority (PUT) changes the priority of the job whose id is provided in the JSON request.
+	See rest_calls.txt for an example json envelope. 
+	Returns:
+		OK           if the priority change was successful
+		BAD_REQUEST  if no job id has been provided
+		NOT_FOUND    if the job cannot be found
+		NOT_MODIFIED if the new priority is equal to the current priority for the given job
+		GONE         if the job is canceled / already executed / currently executing
+	
+	/cancel (DELETE) cancels a job that is still queued for execution
+	See rest_calls.txt for an example json envelope. 
+	Returns:
+		OK           if the job was successfully canceled
+		BAD_REQUEST  if no job id has been provided
+		NOT_FOUND    if the job cannot be found
+		NOT_MODIFIED if the job was already canceled
+		
+	
+	/listqueue (GET) gets the list of the currently queued jobs, ordered by descending priority and ascending date of submission. 
+	Accepts an optional "priority" request parameter to only show the jobs having the given priority
+	Returns:
+		OK followed by the current job queue, in JSON format if there are queued jobs
+		NOT_FOUND if no jobs are currently queued
+	
+2) Scheduler API
+    Resource prefix /scheduler
+   
+    /setinterval (PUT) sets the new time interval (in seconds) the job executor waits for before executing a new job
+	Setting the interval to 0 disables the job executor
+    See rest_calls.txt for an example json envelope.
+    Returns:
+		OK: 		 if the new interval was successfully set
+		BAD_REQUEST  if the new interval is either missing or negativeù
+		
+	/getinterval (GET) gets the currently set interval in seconds
+	Returns the currently set interval in a JSON envelope
+	See rest_calls.txt for an example json envelope.
+	
