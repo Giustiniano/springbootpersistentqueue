@@ -3,7 +3,7 @@ package com.springboot.exercise.rest.model.json;
 import com.springboot.exercise.rest.utils.ValidationUtils;
 import com.springboot.exercise.rest.utils.ValidationUtils;
 
-public class SetSchedulerTimeoutRequest {
+public class SetSchedulerIntervalRequest {
 
     private Integer intervalInSeconds;
 

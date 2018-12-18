@@ -3,7 +3,7 @@ package com.springboot.exercise.rest.scheduler.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.springboot.exercise.model.db.SchedulerSettings;
 import com.springboot.exercise.repository.SchedulerSettingsRepository;
-import com.springboot.exercise.rest.model.json.SetSchedulerTimeoutRequest;
+import com.springboot.exercise.rest.model.json.SetSchedulerIntervalRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class SetSchedulerTimeoutRequestController {
     private SchedulerSettingsRepository schedulerSettingsRepository;
     @PutMapping(path="/setinterval")
     @Transactional
-    public @ResponseBody ResponseEntity<String> setInterval(@RequestBody SetSchedulerTimeoutRequest request) throws JsonProcessingException {
+    public @ResponseBody ResponseEntity<String> setInterval(@RequestBody SetSchedulerIntervalRequest request) throws JsonProcessingException {
         try {
             request.validate();
         } catch (IllegalArgumentException e){
